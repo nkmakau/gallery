@@ -6,7 +6,6 @@ const url = require('url')
 let Image = require('../models/images');
 
 
-//var db = []
 
 // Home page router
 router.get('/', (req, res) => {
