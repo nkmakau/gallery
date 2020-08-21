@@ -24,7 +24,7 @@ pipeline {
 
         EMAIL_SUBJECT_FAILURE = "Status: 'FAILURE' -Job \'${env.JOB_NAME}:${env.BUILD_NUMBER}\'" 
 
-        EMAIL_RECEPIENT = 'noshkim78@gmail.com'
+        EMAIL_RECEPIENT = 'noshmak@gmail.com'
 
     }
     
@@ -63,31 +63,20 @@ pipeline {
   post {
         success {
             emailext attachLog: true, 
-                body:
-                    """
-                    <p>EXECUTED: Job <b>\'${env.JOB_NAME}:${env.BUILD_NUMBER})\'</b></p>
-                    <p>
-                    View console output at 
-                    "<a href="${env.BUILD_URL}">${env.JOB_NAME}:${env.BUILD_NUMBER}</a>"
-                    </p> 
-                      <p><i>(Build log is attached.)</i></p>
-                    """,
-                subject: "Status: 'SUCCESS' -Job \'${env.JOB_NAME}:${env.BUILD_NUMBER}\'", 
-                to: 'noshmak@gmail.com'
+                body: EMAIL_BODY, 
+
+                subject: EMAIL_SUBJECT_SUCCESS,
+
+                to: EMAIL_RECEPIENT
         }
+
         failure {
             emailext attachLog: true, 
-                body:
-                    """
-                    <p>EXECUTED: Job <b>\'${env.JOB_NAME}:${env.BUILD_NUMBER})\'</b></p>
-                    <p>
-                    View console output at 
-                    "<a href="${env.BUILD_URL}">${env.JOB_NAME}:${env.BUILD_NUMBER}</a>"
-                    </p> 
-                      <p><i>(Build log is attached.)</i></p>
-                    """,
-                subject: "Status: FAILURE -Job \'${env.JOB_NAME}:${env.BUILD_NUMBER}\'", 
-                to: 'noshmak@gmail.com'
+                body: EMAIL_BODY, 
+
+                subject: EMAIL_SUBJECT_FAILURE, 
+
+                to: EMAIL_RECEPIENT
         }
   }
 }
