@@ -8,25 +8,27 @@ let Image = require('../models/images');
 
 var db = []
 
-router.get('/', (req,res)=>{
-    
-    Image.find({}, function(err, images){
+// Home page router
+router.get('/', (req, res) => {
+
+    Image.find({}, function(err, images) {
         // console.log(images)
         if (err) console.log(err);
-        res.render('index',{images:images, msg: req.query.msg })
+        res.render('index', { images: images, msg: req.query.msg })
     })
 })
 
-router.post('/upload', (req, res)=>{
-    upload(req,res, (err)=>{
-        if (err){
+// route to handle image upload
+router.post('/upload', (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
             res.redirect(`/?msg=${err}`);
-        }else{
+        } else {
             console.log(req.file);
             // res.send("test");
-            if (req.file == undefined){
+            if (req.file == undefined) {
                 res.redirect('/?msg=Error: No file selcted!');
-            }else{
+            } else {
                 // const imageObj = {
                 //     id: uuid.v4(),
                 //     name: req.file.filename,
@@ -45,7 +47,7 @@ router.post('/upload', (req, res)=>{
                 // save the uploaded image to the database
                 newImage.save()
 
-                
+
                 res.redirect('/?msg=File uploaded successfully');
             }
         }
