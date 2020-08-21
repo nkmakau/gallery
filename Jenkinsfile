@@ -24,7 +24,7 @@ pipeline {
 
         EMAIL_SUBJECT_FAILURE = "Status: 'FAILURE' -Job \'${env.JOB_NAME}:${env.BUILD_NUMBER}\'" 
 
-        EMAIL_RECEPIENT = 'noshkim78@gmail.com'
+        EMAIL_RECEPIENT = 'noshmak@gmail.com'
 
   }
     
@@ -39,12 +39,12 @@ pipeline {
       }
     }
      
-    // stage('Build') {
-    //   steps {
-    //     echo 'Building...'
-    //     sh 'npm install'
-    //   }
-    // }
+    stage('Build') {
+      steps {
+        echo 'Building...'
+        sh 'npm install'
+      }
+    }
     stage('Test') {
       steps {
         echo 'Testing...'
