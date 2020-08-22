@@ -86,7 +86,7 @@ node {
         notifyBuild('STARTED')
 
         stage('Prepare code') {
-            gitCheckThatOut('branch', 'repo URL')
+            gitCheckThatOut('master', 'https://github.com/nkmakau/gallery')
         }
 
         stage('Testing') {
