@@ -37,7 +37,7 @@ pipeline {
                 slackSend channel: '#noah-ip1', 
                           message: 'Hello, Channel This is a test'
             }
-        
+    }        
     stage('Git') {
       steps {
         echo 'Cloning...'
