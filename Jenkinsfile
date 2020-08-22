@@ -100,11 +100,11 @@ node {
             echo "Testing deploy."
 
         stage 'Publish results'
-            slackSend color: "good", message: "Build successful :dancing_penguin: :grin: \n `${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins. Livesite: https://young-waters-07809.herokuapp.com/>"
+            slackSend color: "good", message: "Build successful :parrot: \n `${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins> Livesite: https://young-waters-07809.herokuapp.com/"
     }
 
     catch (err) {
-        slackSend color: "danger", message: "Build failed :grimacing: :kevin: \n`${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins>"
+        slackSend color: "danger", message: "Build failed :grimacing: \n`${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins>"
 
         throw err
     }
