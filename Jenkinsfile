@@ -81,8 +81,6 @@ pipeline {
   }
 }
 
-#!groovy
-
 node {
 
     try {
