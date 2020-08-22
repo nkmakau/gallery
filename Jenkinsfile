@@ -31,6 +31,12 @@ pipeline {
   tools {nodejs "Node-Build"}
     
   stages {
+
+    stage('Slack it'){
+            steps {
+                slackSend channel: '#noah-ip1', 
+                          message: 'Hello, Channel This is a test'
+            }
         
     stage('Git') {
       steps {
