@@ -31,7 +31,7 @@ pipeline {
   tools {nodejs "Node-Build"}
     
   stages {
-    
+
     stage('Git') {
       steps {
         echo 'Cloning...'
@@ -81,32 +81,43 @@ pipeline {
   }
 }
 
-node {
+def notifyBuild(String buildStatus = 'STARTED') {
+  // build status of null means successful
+  buildStatus =  buildStatus ?: 'SUCCESSFUL'
 
-    try {
-        stage 'Checkout'
-            checkout scm
+  // Default values
+  def colorName = 'RED'
+  def colorCode = '#FF0000'
+  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+  def summary = "${subject} (${env.BUILD_URL})"
 
-            sh 'git log HEAD^..HEAD --pretty="%h %an - %s" > GIT_CHANGES'
-            def lastChanges = readFile('GIT_CHANGES')
-            slackSend color: "warning", message: "Started `${env.JOB_NAME}#${env.BUILD_NUMBER}`\n\n_The changes:_\n${lastChanges}"
+  // Override default values based on build status
+  if (buildStatus == 'STARTED') {
+    color = 'YELLOW'
+    colorCode = '#FFFF00'
+    summary = "${subject} :aaw_yeah: (${env.BUILD_URL})"
+  } else if (buildStatus == 'SUCCESSFUL') {
+    color = 'GREEN'
+    colorCode = '#00FF00'
+    summary = """
+    :sunglasses:
+    ```
+      ${subject}\n\n
+      View console output here\n
+      ${env.BUILD_URL}\n
+      Live Site Link:\n
+      https://young-waters-07809.herokuapp.com/
+      Repo Link:\n
+      https://github.com/nkmakau/gallery
+    ```
+    :v:
+    """
+  } else {
+    color = 'RED'
+    colorCode = '#FF0000'
+    summary = "${subject} :coffin_dance: (${env.BUILD_URL})"
+  }
 
-
-        stage 'Clone repository'
-            echo 'Repository exists'
-        stage 'Test'
-            echo 'testing'
-        stage 'Deploy'
-            echo "Testing deploy."
-
-        stage 'Publish results'
-            slackSend color: "good", message: "Build successful :grin: \n `${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins>"
-    }
-
-    catch (err) {
-        slackSend color: "danger", message: "Build failed :grimacing: \n`${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins>"
-
-        throw err
-    }
-
+  // Send notifications
+  slackSend (color: colorCode, message: summary)
 }
