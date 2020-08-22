@@ -31,13 +31,7 @@ pipeline {
   tools {nodejs "Node-Build"}
     
   stages {
-
-    stage('Slack it'){
-            steps {
-                slackSend channel: '#noah-ip1', 
-                          message: 'Hello, Channel This is a test'
-            }
-    }        
+    
     stage('Git') {
       steps {
         echo 'Cloning...'
@@ -85,4 +79,34 @@ pipeline {
                 to: EMAIL_RECEPIENT
         }
   }
+}
+
+node {
+
+    try {
+        stage 'Checkout'
+            checkout scm
+
+            sh 'git log HEAD^..HEAD --pretty="%h %an - %s" > GIT_CHANGES'
+            def lastChanges = readFile('GIT_CHANGES')
+            slackSend color: "warning", message: "Started `${env.JOB_NAME}#${env.BUILD_NUMBER}`\n\n_The changes:_\n${lastChanges}"
+
+
+        stage 'Clone repository'
+            echo 'Repository exists'
+        stage 'Test'
+            echo 'testing'
+        stage 'Deploy'
+            echo "Testing deploy."
+
+        stage 'Publish results'
+            slackSend color: "good", message: "Build successful :grin: \n `${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins>"
+    }
+
+    catch (err) {
+        slackSend color: "danger", message: "Build failed :grimacing: \n`${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins>"
+
+        throw err
+    }
+
 }
