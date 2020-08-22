@@ -1,0 +1,43 @@
+# Dark Studio APP
+
+## Author
+
+[Noah Makau](https://github.com/nkmakau)
+
+## Description
+
+This project is used as an IP to practice on how to deploy a Node JS App with Jenkins Pipeline and send notifications to Slack and Email.
+
+## Live Page 
+https://young-waters-07809.herokuapp.com/
+
+
+## Installation / Setup instruction
+* Open Terminal
+
+* Fork and clone repo from link provided
+
+* Create cluster in MongoDB Atlas
+
+* Create pipeline in Jenkins
+
+* Deploy to Heroku using pipeline
+
+* Merge test branch
+
+* Add email notifications
+
+* Add slack notifications
+
+*Submit IP :-)
+
+## Known Bugs
+* No bugs noted.
+
+## Contact Information 
+
+If you have any bugs, queries or comments, please reach out to me at [noshmak@gmail.com]
+
+## License
+* *MIT License:*
+* Copyright (c) 2020 **Noah Makau**
