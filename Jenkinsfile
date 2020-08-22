@@ -82,32 +82,31 @@ pipeline {
 }
 
 node {
+
     try {
-        notifyBuild('STARTED')
+        stage 'Checkout'
+            checkout scm
 
-        stage('Prepare code') {
-            gitCheckThatOut('master', 'https://github.com/nkmakau/gallery')
-        }
+            sh 'git log HEAD^..HEAD --pretty="%h %an - %s" > GIT_CHANGES'
+            def lastChanges = readFile('GIT_CHANGES')
+            slackSend color: "warning", message: "Started `${env.JOB_NAME}#${env.BUILD_NUMBER}`\n\n_The changes:_\n${lastChanges}"
 
-        stage('Testing') {
-            echo 'Testing'
-            echo 'Testing - publish coverage results'
-        }
 
-        stage('Staging') {
-            echo 'Deploy Stage'
-        }
-        // @todo add checkpoint
-        stage('Deploy') {
-            echo 'Deploy - Backend'
-            echo 'Deploy - Frontend'
-        }
-  } catch (e) {
-    // If there was an exception thrown, the build failed
-    currentBuild.result = "FAILED"
-    throw e
-  } finally {
-    // Success or failure, always send notifications
-    notifyBuild(currentBuild.result)
-  }
+        stage 'Clone repository'
+            echo 'Repository exists'
+        stage 'Test'
+            echo 'testing'
+        stage 'Deploy'
+            echo "Testing deploy."
+
+        stage 'Publish results'
+            slackSend color: "good", message: "Build successful :dancing_penguin: :grin: \n `${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins. Livesite: https://young-waters-07809.herokuapp.com/>"
+    }
+
+    catch (err) {
+        slackSend color: "danger", message: "Build failed :grimacing: :kevin: \n`${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins>"
+
+        throw err
+    }
+
 }
