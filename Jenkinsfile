@@ -100,7 +100,7 @@ node {
             echo "Testing deploy."
 
         stage 'Publish results'
-            slackSend color: "good", message: "Build successful :parrot: \n `${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins> successfully deployed Live site \n '${env.APP_URL}`"
+            slackSend color: "good", message: "Build successful :parrot: \n `${env.JOB_NAME}#${env.BUILD_NUMBER}` <${env.BUILD_URL}|Open in Jenkins> successfully deployed Live site \n https://young-waters-07809.herokuapp.com/"
     }
 
     catch (err) {
